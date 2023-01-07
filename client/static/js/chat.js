@@ -1,4 +1,4 @@
-const socket = io(`https://chaterty.up.railway.app/`, {
+const socket = io(`http://localhost:3000`, { // here i have to put the url of the hosted app.
     auth: {
         token: localStorage.getItem('jwt').split(' ')[1]
       } 
@@ -45,7 +45,6 @@ const loadChatPage = (chatData) => {
             </header>
             <div class="chat-space">
                 <ul id="messages" class="messages">
-                    
                 </ul>
             </div>
             <form id="write-space" class="write-space">

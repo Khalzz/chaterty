@@ -408,7 +408,7 @@ button:hover {
 
 .chat-space {
     padding-top: 10vh;
-    height: 81%;
+    height: 79%;
     display: flex;
     flex-direction: column-reverse;
     overflow-y: auto;
@@ -433,14 +433,14 @@ button:hover {
     display: flex;
     flex-direction: column;
     margin-top: auto;
+    margin-bottom: 0;
 }
 
 .write-space {
-    position: absolute;
-    height: 5vh;
+    height: 10%;
     width: 20em;
     display: flex;
-    bottom: 1em;
+    margin-top: 1%;
     
 }
 
