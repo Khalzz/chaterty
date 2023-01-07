@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000', {
+const socket = io(`https://chaterty.up.railway.app/`, {
     auth: {
         token: localStorage.getItem('jwt').split(' ')[1]
       } 
