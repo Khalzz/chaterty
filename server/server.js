@@ -24,7 +24,7 @@ app.use('', require('./routes/routes'));
 app.use(express.static(path.join(__dirname, '../client/static')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/views', 'index.html'));
+    res.sendFile('../client/views/index.html');
 });
 
 sockets(io, app);
