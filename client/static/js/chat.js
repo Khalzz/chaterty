@@ -1,3 +1,4 @@
+//const socket = io(`http://localhost:3000`, { // here i have to put the url of the hosted app.
 const socket = io(`https://chaterty.up.railway.app/`, { // here i have to put the url of the hosted app.
     auth: {
         token: localStorage.getItem('jwt').split(' ')[1]
@@ -23,6 +24,8 @@ const loadMessagesSocket = (chat, chatData) => {
 }
 
 const loadChatPage = (chatData) => {
+    socket.emit('joinChat', chatData);
+
     const template = `
         <div class="main">
             <div id="alert-closed">

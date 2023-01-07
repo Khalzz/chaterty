@@ -19,12 +19,14 @@ module.exports = (io) => {
         }
     });
     io.on('connection', (socket) => {
-        console.log('client connected');
+        socket.on('joinChat', async (data) => {
+            socket.join(data.id);
+        })
 
         socket.on('loadMessages', async (data) => {
             try {
                 const chat = await Chats.findById(data.id);
-                io.emit('listed-messages',chat.messages);
+                io.to(data.id).emit('listed-messages',chat.messages);
             } catch (error) {
                 console.log(error)
             }
@@ -46,7 +48,7 @@ module.exports = (io) => {
     
                 chat.messages.push(message);
                 await chat.save();
-                io.emit('update');
+                io.to(data.chatId).emit('update');
             } catch (err) {
                 console.log(err)
             }     
@@ -62,7 +64,7 @@ module.exports = (io) => {
                 
                 chat.messages = [];
                 await chat.save();
-                io.emit('update');
+                io.to(data.id).emit('update');
             } catch (err) {
                 console.log(err)
             }     
@@ -93,7 +95,7 @@ module.exports = (io) => {
                     chat.remove();
                 }
 
-                io.emit('reload');
+                io.to(id).emit('reload');
             } catch (error) {
                 console.log(error)
             }
