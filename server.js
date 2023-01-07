@@ -20,11 +20,11 @@ app.use(express.json());
 mongoose.set('strictQuery', true); // for some reason mongoose need this now (study why)
 mongoose.connect(process.env.DB);
 
-app.use('', require('./routes/routes'));
-app.use(express.static(path.join(__dirname, '../client/static')));
+app.use('', require('./server/routes/routes'));
+app.use(express.static(path.join(__dirname, './client/static')));
 
 app.get('/', (req, res) => {
-    res.sendFile('../client/views/index.html');
+    res.sendFile(path.join(__dirname, './client/views/index.html'));
 });
 
 sockets(io, app);

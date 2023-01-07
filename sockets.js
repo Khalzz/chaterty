@@ -1,5 +1,5 @@
-const Users = require('./models/user')
-const Chats = require('./models/chat')
+const Users = require('./server/models/user')
+const Chats = require('./server/models/chat')
 const jwt = require('jsonwebtoken');
 
 module.exports = (io) => {
