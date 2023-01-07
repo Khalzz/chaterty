@@ -17,6 +17,7 @@
     "express": "^4.18.2",
     "express-jwt": "^8.2.0",
     "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.3",
     "path": "^0.12.7",
     "socket.io": "^4.5.4",
     "sweetalert": "^2.1.2"
