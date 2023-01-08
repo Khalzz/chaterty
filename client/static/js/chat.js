@@ -1,4 +1,4 @@
-//const socket = io(`http://localhost:3000`, { // here i have to put the url of the hosted app.
+// const socket = io(`http://localhost:3000`, { // here i have to put the url of the hosted app.
 const socket = io(`https://chaterty.up.railway.app/`, { // here i have to put the url of the hosted app.
     auth: {
         token: localStorage.getItem('jwt').split(' ')[1]
@@ -24,7 +24,10 @@ const loadMessagesSocket = (chat, chatData) => {
 }
 
 const loadChatPage = (chatData) => {
-    socket.emit('joinChat', chatData);
+    socket.emit('joinChat', {
+        id: chatData.id,
+        lastChat: lastChat
+    });
 
     const template = `
         <div class="main">
@@ -135,7 +138,7 @@ const loadMessages = async (chat) => {
     })  
 }
 
-const backContactListener = () => { 
+const backContactListener = (chatData) => { 
     const gotoLogin = document.getElementById('backButton');
     gotoLogin.onclick = (e) => {
         contactsPage();
@@ -207,6 +210,7 @@ const openAlert = (action, chatData) => {
     }
 }
 
+let lastChat = null;
 
 const chatPage = async (chatData) => {
     loadChatPage(chatData);
@@ -214,8 +218,9 @@ const chatPage = async (chatData) => {
     socket.emit('loadMessages', chatData)
     loadMessagesSocket(chat, chatData);
     sendMessageListener(chat, chatData);
-    backContactListener();
+    backContactListener(chat, chatData);
     dropdownButtonListener();
     onDeleteListener(chat);
     onClearListener(chatData);
+    lastChat = chatData.id;
 }
