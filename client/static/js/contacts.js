@@ -5,13 +5,13 @@ const loadContactsPage = () => {
         <div class="main">
             <header>
                 <button class="back" id="backButton"><img src="img/BackButon.svg" alt=""></button>
+                <h2 id="username"></h2>
                 <button class="profile" id="profile"><img src="img/unpressedProfile.svg" alt=""></button>
-
             </header>
             <div class="search">
+                <button id="addcontact" class="submit">Add contacts</button>
                 <h2>search</h2>
                 <input type="search" id="search" placeholder="Alejandro">
-                <button id="addcontact" class="submit">Add contacts</button>
             </div>
             <ul id="contacts">
             </ul>
@@ -33,8 +33,8 @@ const searchBar = () => {
             const userHtml = document.getElementsByClassName(user.name)[0];
             const isVisible = user.name.toLowerCase().includes(value);
             userHtml.classList.toggle('hide', !isVisible)
-        })
-    })
+        });
+    });
 }
 
 const getChats = async () => {
@@ -62,11 +62,11 @@ const getChats = async () => {
 
     // this is for the message at the end of the contacts list
     const endTemplate = document.createElement("p");
-    endTemplate.innerHTML = "This is the end of the list"
+    endTemplate.innerHTML = "This is the end of the list";
     chatList.append(endTemplate);
 }
 
-editUserButtonListener = () => {
+const editUserButtonListener = () => {
     const gotoEdit = document.getElementById('profile');
     gotoEdit.onclick = (e) => {
         loadProfilePage();
@@ -84,8 +84,19 @@ const backButtonListener = () => {
 const addButtonListener = () => {
     const gotoAdd = document.getElementById('addcontact');
     gotoAdd.onclick = (e) => {
-        addPage()
+        addPage();
     }
+}
+
+const loadUsername = async () => {
+    const response = await fetch('User', {
+        headers: {
+            Authorization: localStorage.getItem('jwt')
+        }
+    }).then((data) => data.json());
+
+    const headerUsername = document.getElementById('username');
+    headerUsername.innerHTML = response.username;
 }
 
 const contactsPage = () => {
@@ -95,4 +106,5 @@ const contactsPage = () => {
     addButtonListener();
     getChats()
     searchBar()
+    loadUsername();
 }

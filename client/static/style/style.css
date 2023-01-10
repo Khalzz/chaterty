@@ -185,8 +185,8 @@ h3 {
 }
 
 #addcontact {
+    margin-top: 10em;
     width: 100%;
-    margin-bottom: 10vh;
 }
 
 header {
@@ -204,6 +204,7 @@ header {
     margin-left: auto;
     background-color: rgba(0, 0, 0, 0);
     border: 0;
+    padding: 0 0;
 }
 
 button:hover {
@@ -351,6 +352,10 @@ h4 {
     display: none;
 }
 
+#hide {
+    display: none;
+}
+
 
 
 #chatName {
@@ -360,17 +365,15 @@ h4 {
 }
 
 .back {
-    height: 3em;
-    width: 3em;
-    margin: auto 0;
+    margin: 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0);
     border: 0;
     border-radius: 15px;
-    margin-left: 1em;
     transition: 0.2s;
+    padding: 0 0 ;
 }
 
 .back:hover {
@@ -691,3 +694,76 @@ button:active {
     border: 1px solid #E5E9F0;
 
 }
+
+#username {
+    margin: auto auto;
+    width: 100vw;
+    text-align: center;
+    display: inline;
+}
+
+#loading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1000;
+    background-color: #1E1E1E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#inner-animation {
+    width: 20em;
+    height: 20em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes example {
+    0% {margin-top: -3em;}
+    100% {margin-top: 3em;}
+}
+
+#ball1 {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    display: block;
+    width: 1em;
+    height: 1em;
+    background-color: #BF616A;
+    border-radius: 100px;
+    animation-name: example;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#ball2 {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    width: 1em;
+    height: 1em;
+    background-color: #BF616A;
+    border-radius: 100px;
+    animation-name: example;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#ball3 {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    width: 1em;
+    height: 1em;
+    background-color: #BF616A;
+    border-radius: 100px;
+    animation-name: example;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
