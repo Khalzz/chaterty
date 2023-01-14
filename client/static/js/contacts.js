@@ -15,12 +15,13 @@ const loadContactsPage = () => {
             </div>
             <ul id="contacts">
             </ul>
-        </div>
+        </div>      
     `;
-
+        
     const center = document.getElementsByClassName('center')[0]; // remember that getElementsByClassName give us a array
     loadSurname(false);
     center.innerHTML = template; // al body le entregamos la plantilla
+    openLoadScreen(true);     
 }
 
 // the way the search bar works its that based on a event of type input we search if the string of names includes our value
@@ -28,42 +29,59 @@ const loadContactsPage = () => {
 const searchBar = () => {
     const searchInput = document.getElementById('search');
     searchInput.addEventListener("input", e => {
-        const value = e.target.value.toLowerCase();
+        const value = e.target.value;
         chats.forEach(user => {
             const userHtml = document.getElementsByClassName(user.name)[0];
-            const isVisible = user.name.toLowerCase().includes(value);
+            const isVisible = user.name.includes(value);
             userHtml.classList.toggle('hide', !isVisible)
+            
+            console.log(userHtml)
         });
     });
 }
 
-const getChats = async () => {
-    const chatList = document.getElementById('contacts');
-    await fetch('Chats', {
-        headers: {
+const loadUser = async () => {
+    return await fetch('User', {
+        method: 'GET',
+        headers: { 
             Authorization: localStorage.getItem('jwt')
         }
+    }).then(data => data.json());
+}
+
+const loadChats = async () => {
+        
+    socket.emit('getContacts')
+
+    socket.on('reloadContacts', () => {
+        socket.emit('getContacts')
     })
-    .then(res => res.json())
-    .then(data => {
+
+    socket.on('loadContacts', (data) => {
+        
+        const chatList = document.getElementById('contacts');
+        chatList.innerHTML = ''; // first you have to clear this list you Dumb ass
         chats = data.map(user => {
             const chat = document.createElement("li");
             chat.id = "contactNode"
-            const template =`<button class="chat">${user.name}</button>`;
+            const template =`<button class="chat">${user.name}</button><div id="hiddenRead"></div>`;
             chat.innerHTML = template;
             chat.classList = user.name;
             chatList.append(chat)
+            const read = chat.childNodes[1];
+            if (!user.readed) {
+                read.id = 'read';
+            }
             chat.onclick = (e) => {
                 chatPage(user);
             }
             return {name: user.name, id: user.id, template: chat} 
         });
-    })
-
-    // this is for the message at the end of the contacts list
-    const endTemplate = document.createElement("p");
-    endTemplate.innerHTML = "This is the end of the list";
-    chatList.append(endTemplate);
+        const endTemplate = document.createElement("p");
+        endTemplate.innerHTML = "This is the end of the list";
+        chatList.append(endTemplate);
+        openLoadScreen(false);     
+    }) 
 }
 
 const editUserButtonListener = () => {
@@ -104,7 +122,8 @@ const contactsPage = () => {
     backButtonListener();
     editUserButtonListener();
     addButtonListener();
-    getChats()
+    socket.emit('joinGlobal')
+    loadChats();
     searchBar()
     loadUsername();
 }

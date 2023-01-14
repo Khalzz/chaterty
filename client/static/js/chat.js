@@ -1,21 +1,22 @@
-// const socket = io(`http://localhost:3000`, { // here i have to put the url of the hosted app.
-const socket = io(`https://chaterty.up.railway.app/`, { // here i have to put the url of the hosted app.
+// const socket = io(`https://chaterty.up.railway.app/`, { // here i have to put the url of the hosted app.
+const socket = io(`http://localhost:3000`, { // here i have to put the url of the hosted app.
     auth: {
         token: localStorage.getItem('jwt').split(' ')[1]
-      } 
+    } 
 });
 
 let messageList = [];
 let user;
+let lastChat = null;
 
 const loadMessagesSocket = (chat, chatData) => {
     socket.on('listed-messages', (data) => {
         messageList = data;
-        loadMessages(chat)
+        loadMessages(chat);
     })
 
     socket.on('update', () => {
-        socket.emit('loadMessages', chatData)
+        socket.emit('loadMessages', chatData);
     })
 
     socket.on('reload', () => {
@@ -71,12 +72,12 @@ const sendMessageListener = (chat, chatData) => {
     const messageForm = document.getElementById('write-space');
     const messageSpace = document.getElementById('writer');
     messageForm.onsubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const formData = new FormData(messageForm);
         const data = Object.fromEntries(formData.entries());
         const d = new Date();
 
-        let hour = `${d.getHours()}:${d.getMinutes()}`
+        let hour = `${d.getHours()}:${d.getMinutes()}`;
         if (d.getMinutes().toString().length == 1) {
             hour = `${d.getHours()}:0${d.getMinutes()}`;
         }
@@ -90,10 +91,10 @@ const sendMessageListener = (chat, chatData) => {
             text: message.text,
             hour: message.hour,
             sender: 'you'
-        })
+        });
         loadMessages();
-        messageSpace.value = ''
-        socket.emit('sendMessage', message)
+        messageSpace.value = '';
+        socket.emit('sendMessage', message);
     }
 }
 
@@ -130,7 +131,7 @@ const loadMessages = async (chat) => {
             }
         }
         return message;
-    })
+    });
 
     listOfMessages.innerHTML = ""; // i did this because when we are loading new messages we add the past list + actual list
     fixedMessages.forEach(message => {
@@ -140,14 +141,15 @@ const loadMessages = async (chat) => {
         } else {
             messageNode.id = 'his-message';
         }
-        messageNode.innerHTML = `<p class="text">${message.text}</p><p id="hour">${message.hour}</p>`
-        listOfMessages.append(messageNode)
+        messageNode.innerHTML = `<p class="text">${message.text}</p><p id="hour">${message.hour}</p>`;
+        listOfMessages.append(messageNode);
     })  
 }
 
 const backContactListener = (chatData) => { 
     const gotoLogin = document.getElementById('backButton');
     gotoLogin.onclick = (e) => {
+        socket.emit('leaveChat', chatData)
         contactsPage();
     }
 }
@@ -156,8 +158,8 @@ const dropdownButtonListener = () => {
     const openDropdown = document.getElementById('chat-settings');
     const dropdown = document.getElementsByClassName('dropdown')[0];
     openDropdown.onclick = (e) => {
-        console.log(dropdown)
-        dropdown.classList.toggle("dropdown-open")
+        console.log(dropdown);
+        dropdown.classList.toggle("dropdown-open");
     }
 
 }
@@ -165,30 +167,28 @@ const dropdownButtonListener = () => {
 const onClearListener = (chatData) => {
     const clearButton = document.getElementById('clean');
     clearButton.onclick = (e) => {
-        const alert = document.getElementById('alert-closed')
+        const alert = document.getElementById('alert-closed');
         const alertText = document.getElementById('inner-text');
-        alert.id = 'alert'
-        alertText.innerHTML = "This option will clear the chat from both users!!!"
-        openAlert('clean', chatData)
+        alert.id = 'alert';
+        alertText.innerHTML = "This option will clear the chat from both users!!!";
+        openAlert('clean', chatData);
     }
 }
-
 
 const onDeleteListener = (chatData) => {
     const deleteButton = document.getElementById('delete');
     deleteButton.onclick = (e) => {
         const alert = document.getElementById('alert-closed');
         const alertText = document.getElementById('inner-text');
-        alert.id = 'alert'
-        alertText.innerHTML = "This option will delete the chat from all users!!!"
-        openAlert('delete', chatData)
+        alert.id = 'alert';
+        alertText.innerHTML = "This option will delete the chat from all users!!!";
+        openAlert('delete', chatData);
     }
 }
 
 const onCancelListener = () => {
     const cancel = document.getElementById('cancel');
     const alert = document.getElementById('alert');
-
     cancel.onclick = (e) => {
         alert.id = 'alert-closed';
     }
@@ -197,32 +197,31 @@ const onCancelListener = () => {
 const openAlert = (action, chatData) => {
     onCancelListener();
     const alert = document.getElementById('alert');
-    const button = document.getElementById('action')
+    const button = document.getElementById('action');
     if (action == 'clean') {
-        button.innerHTML = 'Clean'
+        button.innerHTML = 'Clean';
         button.onclick = (e) => {
-            socket.emit('clearChats', chatData)
-            alert.id = 'alert-closed'
+            console.log(chatData)
+            socket.emit('clearChats', chatData);
+            alert.id = 'alert-closed';
             const dropdown = document.getElementsByClassName('dropdown')[0];
-            dropdown.classList.toggle("dropdown-open")    
+            dropdown.classList.toggle("dropdown-open");  
         }
     } else if (action == 'delete') {
-        button.innerHTML = 'Delete'
+        button.innerHTML = 'Delete';
         button.onclick = (e) => {
-            alert.id = 'alert-closed'
+            alert.id = 'alert-closed';
             const dropdown = document.getElementsByClassName('dropdown')[0];
             dropdown.classList.toggle("dropdown-open");
-            socket.emit('deleteChat', chatData)
+            socket.emit('deleteChat', chatData);
         }
     }
 }
 
-let lastChat = null;
-
 const chatPage = async (chatData) => {
     loadChatPage(chatData);
     const chat = await loadChat(chatData);
-    socket.emit('loadMessages', chatData)
+    socket.emit('loadMessages', chatData);
     loadMessagesSocket(chat, chatData);
     sendMessageListener(chat, chatData);
     backContactListener(chat, chatData);

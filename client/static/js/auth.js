@@ -1,9 +1,7 @@
-// user auth
-const checkLogin = () => {
-    return localStorage.getItem('jwt')
-}
+
 
 const loadLoginTemplate = () => {
+    openLoadScreen(false);
     const template = `
     <img class="logo" src="img/logo.svg" alt="please, blame Rodrigo">
     <div class="login">
@@ -23,6 +21,7 @@ const loadLoginTemplate = () => {
 }
 
 const loadRegisterTemplate = () => {
+    openLoadScreen(false);
     const template = `
     <img class="logo" src="img/logo.svg" alt="please, blame Rodrigo">
     <div class="login">

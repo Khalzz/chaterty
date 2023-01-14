@@ -24,20 +24,18 @@ const loadProfilePage = async () => {
     const center = document.getElementsByClassName('center')[0]; // remember that getElementsByClassName give us a array
     loadSurname(false);
     center.innerHTML = template; // al body le entregamos la plantilla
-
-    onUpdateListener()
-    backToChatsListener()
+    onUpdateListener();
+    backToChatsListener();
 }
 
 const onUpdateListener = () => {
     const update = document.getElementById('update-form');
-    update.onsubmit = async (e) => { 
+    update.onsubmit = async (e) => {
+        openLoadScreen(true);
         const formData = new FormData(update);
         const data = Object.fromEntries(formData.entries());
-        
-        console.log(data)
+        console.log(data);
         e.preventDefault();
-        
         
         const edit = await fetch('Edit', {
             method: 'PATCH',
@@ -49,20 +47,19 @@ const onUpdateListener = () => {
         })
 
         const responseData = await edit.text();
-        if (edit.status >= 300) { // if we get a status of 300 or more we show a error on the template
+        if (edit.status >= 300) {
+            openLoadScreen(false);
             alert(responseData);
         } else {
-            // goto chat list
+            contactsPage();
         }
-
-        // now we go back to the user
     }
 }
 
 backToChatsListener = () => {
     const gotoChats = document.getElementById('backToContacts');
     gotoChats.onclick = (e) => {
-        console.log('ekisde')
+        console.log('ekisde');
         contactsPage();
     }
 }

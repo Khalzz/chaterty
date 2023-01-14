@@ -75,7 +75,7 @@ const User = {
     edit: async (req, res) => {
         try {
             const user = await Users.findById(req.auth._id);
-            const newUsername = await Users.findById(req.body.username);
+            const newUsername = await Users.findOne({ username: req.body.username });
 
             if (newUsername) {
                 return res.status(400).send('This username is already in use');

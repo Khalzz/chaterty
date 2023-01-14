@@ -14,8 +14,6 @@ router.get('/Users:username', authenticated, User.listOne);
 router.patch('/Edit', authenticated, User.edit);
 
 // chat crud
-router.get('/Chats', authenticated, Chat.list);
 router.post('/ThisChat', authenticated, Chat.listOne);
-router.post('/Chat', authenticated, Chat.create);
 
 module.exports = router;
