@@ -20,6 +20,9 @@ module.exports = (io) => {
     });
     io.on('connection', (socket) => {
         socket.on('joinChat', async (data) => {
+            if (data.lastChat != null) {
+                socket.leave(data.lastChat);
+            }
             socket.join(data.id);
             const auth = jwt.verify(socket.handshake.auth.token, process.env.SECRET);
             socket.join(auth._id);
