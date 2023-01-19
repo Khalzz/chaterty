@@ -53,7 +53,19 @@ module.exports = (io) => {
         });
 
         socket.on('leaveChat', async (data) => {
-            console.log(data._id)
+            console.log(data)
+            const auth = jwt.verify(socket.handshake.auth.token, process.env.SECRET);
+            const user = await Users.findById(auth._id)
+            const fixedChats = user.chats.map((chatUser) => {
+                if (chatUser.id == data._id) {
+                    return {id: chatUser.id, readed: true}
+                }
+                return chatUser
+            })
+
+            console.log(fixedChats)
+            user.chats = fixedChats;
+            user.save();
             socket.leave(data._id);
         })
 

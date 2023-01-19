@@ -4,7 +4,7 @@ const loadContactsPage = () => {
     const template = `
         <div class="main">
             <header>
-                <button class="back" id="backButton"><img src="img/BackButon.svg" alt=""></button>
+                <button class="back" id="backButton"><img src="img/LogOut.svg" alt=""></button>
                 <h2 id="username"></h2>
                 <button class="profile" id="profile"><img src="img/unpressedProfile.svg" alt=""></button>
             </header>
