@@ -28,14 +28,17 @@ const loadContactsPage = () => {
 // based on that we will toggle or not the class of our elements on the html to hide (wich is a class that set their display to none)
 const searchBar = () => {
     const searchInput = document.getElementById('search');
+    const contacts = document.getElementById('contacts');
     searchInput.addEventListener("input", e => {
         const value = e.target.value;
         chats.forEach(user => {
             const userHtml = document.getElementsByClassName(user.name)[0];
             const isVisible = user.name.includes(value);
-            userHtml.classList.toggle('hide', !isVisible)
-            
-            console.log(userHtml)
+            if (!isVisible) {
+                userHtml.id = 'hide';
+            } else {
+                userHtml.id = 'contactNode';
+            }
         });
     });
 }
@@ -58,7 +61,6 @@ const loadChats = async () => {
     })
 
     socket.on('loadContacts', (data) => {
-        
         const chatList = document.getElementById('contacts');
         chatList.innerHTML = ''; // first you have to clear this list you Dumb ass
         chats = data.map(user => {
@@ -119,11 +121,11 @@ const loadUsername = async () => {
 
 const contactsPage = () => {
     loadContactsPage();
+    searchBar();
     backButtonListener();
     editUserButtonListener();
     addButtonListener();
     socket.emit('joinGlobal')
     loadChats();
-    searchBar()
     loadUsername();
 }

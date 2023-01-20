@@ -16,7 +16,7 @@ const loadLoginTemplate = () => {
     <div class="register"><p >You dont have an account? <a class="link" href="#" id="register">Sign up</a></p></div>
     `;
     const center = document.getElementsByClassName('center')[0]; // remember that getElementsByClassName give us a array
-    loadSurname(true);
+    loadSurname(false);
     center.innerHTML = template; // al body le entregamos la plantilla
 }
 
@@ -27,7 +27,6 @@ const loadRegisterTemplate = () => {
     <div class="login">
         <form id="register-form" class="form">    
             <input type="text" name="username" placeholder="username">
-            <input type="text" name="email" placeholder="email">
             <input type="password" id="password" name="password" placeholder="password">
             <div id="error"></div>
             <button class="submit" type="submit">Sign up</button>

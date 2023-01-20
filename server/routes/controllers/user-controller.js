@@ -48,7 +48,6 @@ const User = {
             const user = await Users.create({ 
                                                 identifier: body.identifier,
                                                 username:body.username, 
-                                                email: body.email,
                                                 password:hashed,
                                                 active: false,
                                                 salt

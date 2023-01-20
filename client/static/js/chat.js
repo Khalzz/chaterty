@@ -1,4 +1,4 @@
-// const socket = io(`http://localhost:3000`, { // here i have to put the url of the hosted app.
+//const socket = io(`http://localhost:3000`, { // here i have to put the url of the hosted app.
 const socket = io(`https://chaterty.up.railway.app/`, { // here i have to put the url of the hosted app.
     auth: {
         token: localStorage.getItem('jwt').split(' ')[1]
@@ -73,6 +73,7 @@ const sendMessageListener = (chat, chatData) => {
     const messageSpace = document.getElementById('writer');
     messageForm.onsubmit = async (e) => {
         e.preventDefault();
+        
         const formData = new FormData(messageForm);
         const data = Object.fromEntries(formData.entries());
         const d = new Date();
@@ -80,6 +81,10 @@ const sendMessageListener = (chat, chatData) => {
         let hour = `${d.getHours()}:${d.getMinutes()}`;
         if (d.getMinutes().toString().length == 1) {
             hour = `${d.getHours()}:0${d.getMinutes()}`;
+        }
+
+        if (data.message.length == 0) {
+            return;
         }
 
         const message = {

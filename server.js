@@ -27,6 +27,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './client/views/index.html'));
 });
 
+app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname, './client/views/404.html'));
+})
+
 sockets(io, app);
 
 const httpServer = server.listen(port, () => {

@@ -77,6 +77,10 @@ module.exports = (io) => {
                     throw new Error('this chat dont exists');
                 }
                 
+                if (data.text.length == 0) {
+                    throw new Error('the message needs to have more than one character');
+                }
+
                 const message = {
                     text: data.text,
                     hour: data.hour,
@@ -286,9 +290,11 @@ module.exports = (io) => {
                 socket.join(secondUser._id.toString());
                 io.to(secondUser._id.toString()).emit('reloadContacts');
                 socket.leave(secondUser._id.toString());
+                io.to(firstUser._id.toString()).emit('quitLoad');
             } catch(e) {
                 console.log(e)
-                io.to(getUser()._id).emit('createLog', {status: 400, message: e.message});
+                const user = await getUser();
+                io.to(user._id.toString()).emit('createLog', {status: 400, message: e.message});
             } 
         })
     })

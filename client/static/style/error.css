@@ -1,0 +1,18 @@
+html {
+    width: 100vw;
+    height: 100vh;
+}
+
+body {
+    margin: 0 0;
+    height: 100%;
+    width: 100%;
+    background-color: #D23D4C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text {
+    font: 10vh sans-serif;
+}

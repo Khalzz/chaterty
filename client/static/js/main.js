@@ -19,6 +19,7 @@ const checkLogin = async () => {
 }
 
 
+
 window.onload = async () => {
     const isLoggedIn = await checkLogin();
     if (isLoggedIn) {
@@ -30,9 +31,14 @@ window.onload = async () => {
 }
 
 const loadSurname = (value) => {
-    const surname = document.getElementsByClassName('name')[0]; // remember that getElementsByClassName give us a array
-    surname.classList.toggle('hide', value);
+    try {
+        const surname = document.getElementsByClassName('presenter')[0]; // remember that getElementsByClassName give us a array
+        surname.classList.toggle('hide', value);
+    } catch (e) {
+        console.log('you are on the auth page');
+    }
 }
+
 
 const openLoadScreen = (value) => {
     const loadScreen = document.getElementById('loading')
